@@ -1,0 +1,56 @@
+import java.math.BigDecimal;
+
+import org.lsmr.selfcheckout.devices.AbstractDevice;
+import org.lsmr.selfcheckout.devices.CoinSlot;
+import org.lsmr.selfcheckout.devices.CoinValidator;
+import org.lsmr.selfcheckout.devices.listeners.AbstractDeviceListener;
+import org.lsmr.selfcheckout.devices.listeners.CoinSlotListener;
+import org.lsmr.selfcheckout.devices.listeners.CoinValidatorListener;
+
+public class PayWithCoin implements CoinValidatorListener {
+	private BigDecimal price;
+	
+	public PayWithCoin(BigDecimal p) {
+		this.price = p;
+		
+	}
+	
+	@Override
+	public void enabled(AbstractDevice<? extends AbstractDeviceListener> device) {
+		// TODO Auto-generated method stub
+		System.out.println("Device is enabled.");
+
+	}
+
+	@Override
+	public void disabled(AbstractDevice<? extends AbstractDeviceListener> device) {
+		// TODO Auto-generated method stub
+		System.out.println("Device is disabled.");
+	}
+
+	@Override
+	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
+		// TODO Auto-generated method stub
+		// We probably want to get the value... 
+		price.subtract(value);
+	}
+
+	@Override
+	public void invalidCoinDetected(CoinValidator validator) {
+		// TODO Auto-generated method stub
+		System.out.println("Coin is invalid");
+
+	}
+
+	
+	public void pay() {
+		if (price.intValueExact() <= 0) {
+			System.out.println("Successful transaction!");
+		} else {
+			System.out.println("Insufficient amount paid, still requires $" + price.intValue());
+		}
+	}
+	
+	
+
+}
