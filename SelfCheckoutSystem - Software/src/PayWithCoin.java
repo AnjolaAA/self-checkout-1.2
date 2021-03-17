@@ -51,10 +51,9 @@ public class PayWithCoin implements CoinValidatorListener{
 	public boolean finishPaying() {
 		if (price.doubleValue() <= 0.00) {
 			System.out.println("Successful transaction!");
-			System.out.println(price.doubleValue());
 			return true;
 		} else {
-			System.out.println("Insufficient amount paid, still requires $" + price.intValue());
+			System.out.println("Insufficient amount paid, still requires $" + price.doubleValue());
 			return false;
 		}
 	}
