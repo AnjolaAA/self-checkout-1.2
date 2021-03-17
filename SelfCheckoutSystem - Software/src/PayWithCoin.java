@@ -1,20 +1,18 @@
+package org.lsmr.selfcheckout.software.src;
 import java.math.BigDecimal;
 
 import org.lsmr.selfcheckout.devices.AbstractDevice;
-import org.lsmr.selfcheckout.devices.CoinSlot;
 import org.lsmr.selfcheckout.devices.CoinValidator;
 import org.lsmr.selfcheckout.devices.listeners.AbstractDeviceListener;
-import org.lsmr.selfcheckout.devices.listeners.CoinSlotListener;
 import org.lsmr.selfcheckout.devices.listeners.CoinValidatorListener;
 
-public class PayWithCoin implements CoinValidatorListener {
+public class PayWithCoin implements CoinValidatorListener{
 	// price is the total price of the transaction, so for however many items are scanned
 	private BigDecimal price;
 	
 	// create a new "PayWithCoin" "session" which has the price of the transaction
 	public PayWithCoin(BigDecimal p) {
 		this.price = p;
-		
 	}
 	
 	// From listener - says the device is enabled. probably have to change the parameters, I'll get around to that later
@@ -36,7 +34,7 @@ public class PayWithCoin implements CoinValidatorListener {
 	@Override
 	public void validCoinDetected(CoinValidator validator, BigDecimal value) {
 		// TODO Auto-generated method stub
-		price.subtract(value);
+		price = price.subtract(value);
 	}
 
 	// From listener, when an invalid coin is detected. It just notifies that the coin is invalid.
@@ -46,12 +44,14 @@ public class PayWithCoin implements CoinValidatorListener {
 		System.out.println("Coin is invalid");
 
 	}
+	
 
-	// For when finishing paying, so I should probably rename it to something better? Anyways. If the value of all the coins is less than or equal to 0, 
+	// For when finishing paying. If the value of all the coins is less than or equal to 0, 
 	// everything has been paid off and the transaction is successful. Otherwise it says it is insufficient and it returns "false" to indicate the transaction isn't over.
 	public boolean finishPaying() {
-		if (price.intValueExact() <= 0) {
+		if (price.doubleValue() <= 0.00) {
 			System.out.println("Successful transaction!");
+			System.out.println(price.doubleValue());
 			return true;
 		} else {
 			System.out.println("Insufficient amount paid, still requires $" + price.intValue());
