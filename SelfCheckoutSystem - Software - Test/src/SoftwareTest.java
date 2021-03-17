@@ -69,9 +69,9 @@ public class SoftwareTest {
 	
 	@Test (expected = DisabledException.class)
 	public void payOnDisabledMachine() throws DisabledException {
-		c.checkout.coinValidator.disable();
 		c.runningTotal = new BigDecimal(1.00);
 		c.startCoinPay();
+		c.checkout.coinValidator.disable();
 		Coin coin = new Coin(new BigDecimal(1.00), Currency.getInstance("CAD"));
 		c.pay(coin);
 		Assert.assertFalse(c.endCoinPay());
@@ -87,10 +87,15 @@ public class SoftwareTest {
 	}
 	
 	@Test
-	public void enableDevice() {
+	public void payOnEnabledDevice() throws DisabledException {
+		c.runningTotal = new BigDecimal(1.00);
+		c.startCoinPay();
 		c.checkout.coinValidator.enable();
-		// no idea what to test here, this is just coverage
+		Coin coin = new Coin(new BigDecimal(1.00), Currency.getInstance("CAD"));
+		c.pay(coin);
+		Assert.assertTrue(c.endCoinPay());
 	}
+	
 	
   
 }
