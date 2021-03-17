@@ -1,7 +1,10 @@
-//Load the package somehow; package SelfCheckoutSystem - Hardware - v1.2\org.lsmr.selfcheckout;
+package org.lsmr.selfcheckout.software.src;
 
-//import org.lsmr.selfcheckout.devices.*;
-//import org.lsmr.selfcheckout.devices.listeners.*;
+import java.math.BigDecimal;
+import java.util.Currency;
+
+import org.lsmr.selfcheckout.*;
+import org.lsmr.selfcheckout.devices.*;
 
 public class Customer {
 
