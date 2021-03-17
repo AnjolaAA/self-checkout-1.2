@@ -20,11 +20,13 @@ public class PayWithBanknote implements BanknoteValidatorListener {
 	@Override
 	public void enabled(AbstractDevice<? extends AbstractDeviceListener> device) {
 		// TODO Auto-generated method stub
+		System.out.println("Device enabled.");
 	}
 
 	@Override
 	public void disabled(AbstractDevice<? extends AbstractDeviceListener> device) {
 		// TODO Auto-generated method stub
+		System.out.println("Device disabled.");
 	}
 	
 	@Override //overrides method from BanknoteValidatorListener, so when a valid banknote is detected, the cost will decrease
