@@ -12,27 +12,29 @@ public class BagArea implements ElectronicScaleListener{
 	public void enabled(AbstractDevice<? extends AbstractDeviceListener> device) {
 		// TODO Auto-generated method stub
 		status = true;
-		System.out.println("Device is enabled.");
+		System.out.println("Bagging Area Scale is enabled.");
 	}
 
 	@Override
 	public void disabled(AbstractDevice<? extends AbstractDeviceListener> device) {
 		// TODO Auto-generated method stub
 		status = false;
-		System.out.println("Device is disabled.");
+		System.out.println("Bagging Area Scale is disabled.");
 	}
 
 	@Override
 	public void weightChanged(ElectronicScale scale, double weightInGrams) {
 		// TODO Auto-generated method stub
 		totalWeight = weightInGrams;
+		
+		System.out.println("Bagging Area Scale weight updated.");
 	}
 
 	@Override
 	public void overload(ElectronicScale scale) {
 		// TODO Auto-generated method stub
 		overloaded = true;
-		System.out.println("Scale is Overloaded, Please remove an Item.");
+		System.out.println("Bagging Area Scale is Overloaded, Please remove an Item.");
 		
 	}
 
@@ -40,7 +42,7 @@ public class BagArea implements ElectronicScaleListener{
 	public void outOfOverload(ElectronicScale scale) {
 		// TODO Auto-generated method stub
 		overloaded = false;
-		System.out.println("Device is no longer Overloaded.");
+		System.out.println("Bagging Area Scale is no longer Overloaded.");
 	}
 
 }
