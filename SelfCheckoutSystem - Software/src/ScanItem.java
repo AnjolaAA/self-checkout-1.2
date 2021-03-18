@@ -29,9 +29,13 @@ public class ScanItemEvent implements BarcodeScannerListener {
     @Override
     public void barcodeScanned(BarcodeScanner barcodeScanner, Barcode barcode) {
         // TODO Auto-generated method stub
-        BarcodeProduct product = ProductDatabases.BARCODED_PRODUCT_DATABASE.get(barcode);
-        this.price = product.getPrice();
-        System.out.println("Barcode Successfully scanned!");
+        try{
+            BarcodeProduct product = ProductDatabases.BARCODED_PRODUCT_DATABASE.get(barcode);
+            this.price = product.getPrice();
+            System.out.println("Barcode Successfully scanned!");
+        }catch(NullPointerException e){
+            System.out.println("Product does not exist!");
+        }
     }
     
     public BigDecimal getPrice(){
