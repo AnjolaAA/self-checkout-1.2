@@ -2,11 +2,14 @@ package org.lsmr.selfcheckout;
 import org.lsmr.selfcheckout.devices.*;
 import org.lsmr.selfcheckout.devices.listeners.*;
 
-public class scanItem implements BarcodeScannerListener {
+public class ScanItem implements BarcodeScannerListener {
     
     private BigDecimal price;
     
-    public ScanItem(){}
+    public ScanItem(BarcodeScanner bScanner, Barcode b){
+        BarcodeProduct product = ProductDatabases.BARCODED_PRODUCT_DATABASE.get(barcode);
+        this.price = product.getPrice();
+    }
 
     //Enable listener
     @Override
@@ -24,12 +27,11 @@ public class scanItem implements BarcodeScannerListener {
     }
 
     // Notify listener that valid barcode is scanned
-    //retrieve product price, add to running total for Customer
+    // Retrieve product price, add to running total for Customer
     @Override
     public void barcodeScanned(BarcodeScanner barcodeScanner, Barcode barcode) {
         // TODO Auto-generated method stub
-        BarcodePorduct p = ProductDatabases.BARCODED_PRODUCT_dATABASE.get(barcode);
-        price = p.getPrice();
+        System.out.println("Barcode Successfully scanned!");
     }
     
     public BigDecimal getPrice(){
