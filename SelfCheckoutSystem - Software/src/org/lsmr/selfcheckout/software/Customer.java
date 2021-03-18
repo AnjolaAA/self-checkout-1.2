@@ -12,7 +12,7 @@ public class Customer {
     private PayWithBanknote paymentBanknote;
     
     private ElectronicScale baggingScale; 
-    private BagArea baggingArea;
+    private BagArea baggingAreaListener;
     public BigDecimal runningTotal;
     public SelfCheckoutStation checkout;
     public double expectedWeight;
@@ -30,8 +30,8 @@ public class Customer {
         this.expectedWeight = 0;
         this.runningTotal = new BigDecimal(0.000);
         
-        baggingScale = new ElectronicScale(23000,1);
-        baggingScale.register(baggingArea);
+        baggingAreaListener = new BagArea();
+        checkout.baggingArea.register(baggingAreaListener);
     }
 
 //indicating that payment has started with coins
@@ -76,7 +76,7 @@ public class Customer {
   	}
   	
     
-    //Barcode item price is added to running total
+      //Barcode item price is added to running total
     public void addBarcodeItem(BarcodedItem item){
         ScanItemEvent sc = new ScanItemEvent();
         checkout.mainScanner.register(sc);
@@ -87,25 +87,31 @@ public class Customer {
 	
 	//Places Item into the Bagging Area and Checks if weight is correct
     public void placeItemInBagging(BarcodedItem item) throws Exception{
-    	baggingScale.add(item);
-    	try {
-			if (baggingScale.getCurrentWeight() != expectedWeight) {
-				throw new Exception("Item added to bagging is not the Item Scanned please try again");
-				
-			}
-		} catch (OverloadException e) {
-			//catch block
-			System.out.println("Bagging Area Scale is Overloaded, Please remove the Item.");
+    	checkout.baggingArea.add(item);
+		if (checkout.baggingArea.getCurrentWeight() != expectedWeight) {
+			throw new Exception("Item added to bagging is not the Item Scanned please try again");	
 		}
     	
     }
 	
     //Removes Item from bagging area
     public void removeItemInBagging(BarcodedItem item) {
-    	baggingScale.remove(item);
+    	checkout.baggingArea.remove(item);
     }
     
 
+    public void pay(Banknote banknote){
+        //payWithBanknote(this.runningTotal);
+    }
+    
+    public double getBagWeight() {
+    	try {
+			return checkout.baggingArea.getCurrentWeight();
+		} catch (OverloadException e) {
+			System.out.println("Current weight is overloading!");
+		}
+		return -1;
+    }
   
 
 }
