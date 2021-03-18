@@ -74,7 +74,7 @@ public class Customer {
 				
 			}
 		} catch (OverloadException e) {
-			// TODO Auto-generated catch block
+			//catch block
 			System.out.println("Bagging Area Scale is Overloaded, Please remove the Item.");
 		}
     	
