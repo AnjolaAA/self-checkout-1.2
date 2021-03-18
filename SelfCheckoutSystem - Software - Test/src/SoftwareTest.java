@@ -24,12 +24,21 @@ public class SoftwareTest {
         BarcodedProduct prod = new BarcodedProduct(bCode, "A red apple", new BigDecimal(8.99));
         BarcodedItem item = new BarcodedItem(bCode, 0.77);
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode, prod);
-        c.addBarcodeItem(item);
+        boolean failedScans = true;
+        while (failedScans) {
+        	try {
+                c.addBarcodeItem(item);
+                failedScans = false;
+            } catch (Exception e) {
+            	c.runningTotal = new BigDecimal(0);
+            	failedScans = true;
+            }
+        }
         System.out.println(c.runningTotal);
         Assert.assertTrue(c.runningTotal.equals(new BigDecimal(8.99)));
     }
     
-    @Test(expected = NullPointerException.class);
+    @Test(expected = NullPointerException.class)
     public void scanInvalidItem(){
         Barcode bCode = new Barcode("01234567");
         BarcodedItem item = new BarcodedItem(bCode, 0.77);
@@ -48,8 +57,17 @@ public class SoftwareTest {
         BarcodedProduct prod2 = new BarcodedProduct(bCode2, "A small apple", new BigDecimal("1"));
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode1, prod1);
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode2, prod2);
-        c.addBarcodeItem(item1);
-        c.addBarcodeItem(item2);
+        boolean failedScans = true;
+        while (failedScans) {
+        	try {
+                c.addBarcodeItem(item1);
+                c.addBarcodeItem(item2);
+                failedScans = false;
+            } catch (Exception e) {
+            	c.runningTotal = new BigDecimal(0);
+            	failedScans = true;
+            }
+        }
 
         //Running total should be 10
         Assert.assertTrue(c.runningTotal.equals(new BigDecimal(10)));
@@ -67,9 +85,19 @@ public class SoftwareTest {
         BarcodedProduct prod2 = new BarcodedProduct(bCode2, "A small apple", new BigDecimal("1"));
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode1, prod1);
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode2, prod2);
-        c.addBarcodeItem(item1);
-        c.addBarcodeItem(item2);
-        //expectedWeight = 1.00
+        boolean failedScans = true;
+        while (failedScans) {
+        	try {
+                c.addBarcodeItem(item1);
+                c.addBarcodeItem(item2);
+                failedScans = false;
+            } catch (Exception e) {
+            	c.expectedWeight = 0.0;
+            	failedScans = true;
+            }
+        }
+        
+        //expectedWeight = 1.10
         Assert.assertTrue(c.expectedWeight == 1.10);
     }
 	//Testing Coin Payment
