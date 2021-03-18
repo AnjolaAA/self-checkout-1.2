@@ -259,6 +259,95 @@ public class SoftwareTest {
 		c.payBanknote(banknote);
 		Assert.assertTrue(c.endBanknotePay());
 	}
+	@Test
+	public void bagValidItems() throws Exception {
+		
+		Barcode b1 = new Barcode("1234");
+		Barcode b2 = new Barcode("12345");
+		Barcode b3 = new Barcode("123456");
+		
+		BarcodedProduct prod1 = new BarcodedProduct(b1, "A red apple", new BigDecimal(8.99));
+		BarcodedProduct prod2 = new BarcodedProduct(b2, "A green apple", new BigDecimal(8.99));
+		BarcodedProduct prod3 = new BarcodedProduct(b3, "A yellow apple", new BigDecimal(8.99));
+		
+		BarcodedItem bItem1 = new BarcodedItem(b1, 100);
+		BarcodedItem bItem2 = new BarcodedItem(b2, 100);
+		BarcodedItem bItem3 = new BarcodedItem(b3, 100);
+		
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(b1, prod1);
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(b2, prod2);
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(b3, prod3);
+        
+		boolean failedScans = true;
+		while (failedScans) {
+        	try {
+        		
+        		c.addBarcodeItem(bItem1);
+        		c.placeItemInBagging(bItem1);
+        		
+        		c.addBarcodeItem(bItem2);
+        		c.placeItemInBagging(bItem2);
+        		c.addBarcodeItem(bItem3);
+        		c.placeItemInBagging(bItem3);
+        		failedScans = false;
+        		
+            } catch (Exception e) {
+            	
+            	c.expectedWeight = 0;
+            	failedScans = true;
+            }
+        	
+        }
+		Assert.assertTrue(c.getBagWeight() == 300);
+	}
 	
+	@Test(expected = Exception.class)
+	public void bagOverload() throws Exception {
+		Barcode b1 = new Barcode("1234");
+		
+		BarcodedProduct prod1 = new BarcodedProduct(b1, "A red apple", new BigDecimal(8.99));
+		
+		BarcodedItem bItem1 = new BarcodedItem(b1, 999999);
+		
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(b1, prod1);
+        c.addBarcodeItem(bItem1);
+		c.placeItemInBagging(bItem1);
+	}
+	
+	@Test
+	public void bagRemoveItems() throws Exception {
+		
+		Barcode b1 = new Barcode("1234");
+		Barcode b2 = new Barcode("12345");
+		Barcode b3 = new Barcode("123456");
+		
+		BarcodedProduct prod1 = new BarcodedProduct(b1, "A red apple", new BigDecimal(8.99));
+		BarcodedProduct prod2 = new BarcodedProduct(b2, "A green apple", new BigDecimal(8.99));
+		BarcodedProduct prod3 = new BarcodedProduct(b3, "A yellow apple", new BigDecimal(8.99));
+		
+		BarcodedItem bItem1 = new BarcodedItem(b1, 100);
+		BarcodedItem bItem2 = new BarcodedItem(b2, 100);
+		BarcodedItem bItem3 = new BarcodedItem(b3, 100);
+		
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(b1, prod1);
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(b2, prod2);
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(b3, prod3);
+        
+        		c.addBarcodeItem(bItem1);
+        		c.placeItemInBagging(bItem1);
+        		System.out.println("1");
+        		
+        		c.addBarcodeItem(bItem2);
+        		c.placeItemInBagging(bItem2);
+        		System.out.println("2");
+        		
+        		c.addBarcodeItem(bItem3);
+        		c.placeItemInBagging(bItem3);
+        		System.out.println("3");
+        		
+        		c.removeItemInBagging(bItem2);
+        		
+		Assert.assertTrue(c.getBagWeight() == 200);
+	}
   
 }
