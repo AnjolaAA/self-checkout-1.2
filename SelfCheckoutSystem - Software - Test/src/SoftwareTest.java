@@ -14,7 +14,64 @@ public class SoftwareTest {
 	public void startUp() {
 		c = new Customer();
 	}
+	
+	    
+    @Test
+    //Scan testing
+    public void scanValidItem(){
+        Barcode bCode = new Barcode("1234567890");
+        BarcodedProduct prod = new BarcodedProduct(bCode, "A red apple", new BigDecimal("8.99"));
+        BarcodedItem item = new BarcodedItem(bCode, 0.77);
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode, prod);
+        c.addBarcodeItem(item);
+        Assert.assertTrue(c.runningTotal);
+    }
+    
+    @Test(expected = NullPointerException.class);
+    public void scanInvalidItem(){
+        Barcode bCode = new Barcode("01234567");
+        BarcodedItem item = new BarcodedItem(bCode, 0.77);
+        c.addBarcodeItem(item);
+    }
+    
+    @Test
+    public void checkRunningTotal(){
+        Barcode bCode1 = new Barcode("00000000000");
+        Barcode bCode2 = new Barcode("11111111111");
 
+        BarcodedItem item1 = new BarcodedItem(bCode1, 0.33);
+        BarcodedItem item2 = new BarcodedItem(bCode2, 0.33);
+
+        BarcodedProduct prod1 = new BarcodedProduct(bCode, "A red apple", new BigDecimal("9"));
+        BarcodedProduct prod2 = new BarcodedProduct(bCode, "A small apple", new BigDecimal("1"));
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode1, prod1);
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode2, prod2);
+        c.addBarcodeItem(item1);
+        c.addBarcodeItem(item2);
+
+        //Running total should be 10
+        Assert.assertTrue(c.runningTotal);
+    }
+    
+    @Test
+    public void checkWeightTotal(){
+        Barcode bCode1 = new Barcode("00");
+        Barcode bCode2 = new Barcode("11");
+
+        BarcodedItem item1 = new BarcodedItem(bCode1, 0.77);
+        BarcodedItem item2 = new BarcodedItem(bCode2, 0.33);
+
+        BarcodedProduct prod1 = new BarcodedProduct(bCode, "A red apple", new BigDecimal("9"));
+        BarcodedProduct prod2 = new BarcodedProduct(bCode, "A small apple", new BigDecimal("1"));
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode1, prod1);
+        ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode2, prod2);
+        c.addBarcodeItem(item1);
+        c.addBarcodeItem(item2);
+
+        //Running total should be 10
+        Assert.assertTrue(c.expectedWeight);
+    }
+	//Testing Coin Payment
 	@Test
 	public void payTest() throws DisabledException{
 		c.runningTotal = new BigDecimal(1.00);
