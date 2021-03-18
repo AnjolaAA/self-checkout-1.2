@@ -14,8 +14,7 @@ public class SoftwareTest {
 	public void startUp() {
 		c = new Customer();
 	}
-	
-	    
+	   
     @Test
     //Scan testing
     public void scanValidItem(){
@@ -50,7 +49,7 @@ public class SoftwareTest {
         c.addBarcodeItem(item2);
 
         //Running total should be 10
-        Assert.assertTrue(c.runningTotal);
+        Assert.assertTrue(c.runningTotal == 10.00);
     }
     
     @Test
@@ -68,8 +67,8 @@ public class SoftwareTest {
         c.addBarcodeItem(item1);
         c.addBarcodeItem(item2);
 
-        //Running total should be 10
-        Assert.assertTrue(c.expectedWeight);
+        //Running total should be 1
+        Assert.assertTrue(c.expectedWeight == 1.00);
     }
 	//Testing Coin Payment
 	@Test
