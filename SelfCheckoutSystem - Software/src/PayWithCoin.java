@@ -1,4 +1,3 @@
-package org.lsmr.selfcheckout.software.src;
 import java.math.BigDecimal;
 
 import org.lsmr.selfcheckout.devices.AbstractDevice;
