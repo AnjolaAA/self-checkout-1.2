@@ -7,6 +7,8 @@ import org.junit.*;
 import org.lsmr.selfcheckout.software.src.Customer;
 import org.lsmr.selfcheckout.*;
 import org.lsmr.selfcheckout.devices.*;
+import org.lsmr.selfcheckout.products.*;
+import org.lsmr.selfcheckout.external.*;
 
 public class SoftwareTest {
 	public Customer c;
@@ -19,11 +21,12 @@ public class SoftwareTest {
     //Scan testing
     public void scanValidItem(){
         Barcode bCode = new Barcode("1234567890");
-        BarcodedProduct prod = new BarcodedProduct(bCode, "A red apple", new BigDecimal("8.99"));
+        BarcodedProduct prod = new BarcodedProduct(bCode, "A red apple", new BigDecimal(8.99));
         BarcodedItem item = new BarcodedItem(bCode, 0.77);
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode, prod);
         c.addBarcodeItem(item);
-        Assert.assertTrue(c.runningTotal);
+        System.out.println(c.runningTotal);
+        Assert.assertTrue(c.runningTotal.equals(new BigDecimal(8.99)));
     }
     
     @Test(expected = NullPointerException.class);
@@ -41,15 +44,15 @@ public class SoftwareTest {
         BarcodedItem item1 = new BarcodedItem(bCode1, 0.33);
         BarcodedItem item2 = new BarcodedItem(bCode2, 0.33);
 
-        BarcodedProduct prod1 = new BarcodedProduct(bCode, "A red apple", new BigDecimal("9"));
-        BarcodedProduct prod2 = new BarcodedProduct(bCode, "A small apple", new BigDecimal("1"));
+        BarcodedProduct prod1 = new BarcodedProduct(bCode1, "A red apple", new BigDecimal("9"));
+        BarcodedProduct prod2 = new BarcodedProduct(bCode2, "A small apple", new BigDecimal("1"));
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode1, prod1);
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode2, prod2);
         c.addBarcodeItem(item1);
         c.addBarcodeItem(item2);
 
         //Running total should be 10
-        Assert.assertTrue(c.runningTotal == 10.00);
+        Assert.assertTrue(c.runningTotal.equals(new BigDecimal(10)));
     }
     
     @Test
@@ -60,15 +63,14 @@ public class SoftwareTest {
         BarcodedItem item1 = new BarcodedItem(bCode1, 0.77);
         BarcodedItem item2 = new BarcodedItem(bCode2, 0.33);
 
-        BarcodedProduct prod1 = new BarcodedProduct(bCode, "A red apple", new BigDecimal("9"));
-        BarcodedProduct prod2 = new BarcodedProduct(bCode, "A small apple", new BigDecimal("1"));
+        BarcodedProduct prod1 = new BarcodedProduct(bCode1, "A red apple", new BigDecimal("9"));
+        BarcodedProduct prod2 = new BarcodedProduct(bCode2, "A small apple", new BigDecimal("1"));
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode1, prod1);
         ProductDatabases.BARCODED_PRODUCT_DATABASE.put(bCode2, prod2);
         c.addBarcodeItem(item1);
         c.addBarcodeItem(item2);
-
-        //Running total should be 1
-        Assert.assertTrue(c.expectedWeight == 1.00);
+        //expectedWeight = 1.00
+        Assert.assertTrue(c.expectedWeight == 1.10);
     }
 	//Testing Coin Payment
 	@Test
