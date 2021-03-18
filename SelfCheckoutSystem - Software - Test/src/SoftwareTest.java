@@ -182,6 +182,83 @@ public class SoftwareTest {
 		Assert.assertTrue(c.endCoinPay());
 	}
 	
+	//BANKNOTE TESTING PAYMENT
+	@Test
+	public void testBanknotePay() throws DisabledException, OverloadException{
+		c.billPrice = 10;
+		c.startBanknotePay();
+		Banknote banknote = new Banknote(10, Currency.getInstance("CAD"));
+		c.payBanknote(banknote);
+		Assert.assertTrue(c.endBanknotePay());
+	}
+	
+	@Test
+	public void testPayingInsufficientBanknotes() throws DisabledException, OverloadException {
+		c.billPrice = 20;
+		c.startBanknotePay();
+		Banknote banknote = new Banknote(10, Currency.getInstance("CAD"));
+		c.payBanknote(banknote);
+		Assert.assertFalse(c.endBanknotePay());
+	}
+	
+	@Test
+	public void testPayingWithAllBanknotes() throws DisabledException, OverloadException{
+		c.billPrice = 25;
+		c.startBanknotePay();
+		Banknote banknote1 = new Banknote(5, Currency.getInstance("CAD"));
+		c.payBanknote(banknote1);
+		Banknote banknote2 = new Banknote(10, Currency.getInstance("CAD"));
+		c.payBanknote(banknote2);
+		Banknote banknote3 = new Banknote(10, Currency.getInstance("CAD"));
+		c.payBanknote(banknote3);
+		Assert.assertTrue(c.endBanknotePay());
+	}
+	
+	@Test (expected = SimulationException.class)
+	public void payWithInvalidBanknotes() throws DisabledException, OverloadException{
+		c.billPrice = 10;
+		c.startBanknotePay();
+		c.payBanknote(null);
+		Assert.assertFalse(c.endBanknotePay());
+	}
+	
+	@Test
+	public void payWithAmericanBanknotes() throws DisabledException, OverloadException{
+		c.billPrice = 25;
+		c.startBanknotePay();
+		Banknote banknote = new Banknote(25, Currency.getInstance("USD"));
+		c.payBanknote(banknote);
+		Assert.assertFalse(c.endBanknotePay());
+	}
+	
+	@Test (expected = DisabledException.class)
+	public void testPayOnDisabledMachineBanknote() throws DisabledException, OverloadException {
+		c.billPrice = 10;
+		c.startBanknotePay();
+		c.checkout.banknoteValidator.disable();
+		Banknote banknote = new Banknote(10, Currency.getInstance("CAD"));
+		c.payBanknote(banknote);
+		Assert.assertFalse(c.endBanknotePay());
+	}
+	
+	@Test
+	public void testOverPayingBanknote() throws DisabledException, OverloadException {
+		c.billPrice = 10;
+		c.startBanknotePay();
+		Banknote banknote = new Banknote(20, Currency.getInstance("CAD"));
+		c.payBanknote(banknote);
+		Assert.assertTrue(c.endBanknotePay());
+	}
+	
+	@Test
+	public void testPayOnEnabledDeviceBanknote() throws DisabledException, OverloadException {
+		c.billPrice = 10;
+		c.startBanknotePay();
+		c.checkout.banknoteValidator.enable();
+		Banknote banknote = new Banknote(10, Currency.getInstance("CAD"));
+		c.payBanknote(banknote);
+		Assert.assertTrue(c.endBanknotePay());
+	}
 	
   
 }
