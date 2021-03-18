@@ -13,6 +13,9 @@ public class Customer {
     public double expectedWeight;
     private PayWithCoin payment;
    
+    private ElectronicScale baggingScale; 
+    private BagArea baggingArea;
+    
     
     public Customer () {
     	// create the needed selfcheckoutstation for all tests
@@ -25,6 +28,9 @@ public class Customer {
         
         this.expectedWeight = 0;
         this.runningTotal = new BigDecimal(0.000);
+        
+        baggingScale = new ElectronicScale(23000,1);
+        baggingScale.register(baggingArea);
     }
 
 //indicating that payment has started with coins
@@ -59,9 +65,24 @@ public class Customer {
         expectedWeight += item.getWeight(); //for checking the weight 
     }
 
-    public void placeItemInBagging(){
-
+    public void placeItemInBagging(BarcodedItem item) throws Exception{
+    	baggingScale.add(item);
+    	try {
+			if (baggingScale.getCurrentWeight() != expectedWeight) {
+				throw new Exception("Item added to bagging is not the Item Scanned please try again");
+				
+			}
+		} catch (OverloadException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Bagging Area Scale is Overloaded, Please remove the Item.");
+		}
+    	
     }
+
+    public void removeItemInBagging(BarcodedItem item) {
+    	baggingScale.remove(item);
+    }
+    
 
     public void pay(Banknote banknote){
         payWithBanknote(this.runningTotal);
