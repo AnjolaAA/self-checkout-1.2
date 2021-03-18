@@ -22,6 +22,9 @@ public class Customer {
     	
         // Self checkout station: so far scale maximum weight + sensitivity are 23000g and 10g, this can be changed as necessary, this is just an example.
     	checkout = new SelfCheckoutStation(currency, bankDenom, coinDenom, 23000, 10);
+        
+        this.expectedWeight = 0;
+        this.runningTotal = new BigDecimal(0);
     }
 
 //indicating that payment has started with coins
