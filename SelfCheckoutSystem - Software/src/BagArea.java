@@ -25,7 +25,7 @@ public class BagArea implements ElectronicScaleListener{
 	@Override
 	public void weightChanged(ElectronicScale scale, double weightInGrams) {
 		// TODO Auto-generated method stub
-		
+		totalWeight = weightInGrams;
 	}
 
 	@Override
