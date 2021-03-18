@@ -87,7 +87,7 @@ public class Customer {
     
 
     public void pay(Banknote banknote){
-        payWithBanknote(this.runningTotal);
+        //payWithBanknote(this.runningTotal);
     }
 
 }
