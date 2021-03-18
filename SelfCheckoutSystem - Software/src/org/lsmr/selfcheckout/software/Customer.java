@@ -7,15 +7,16 @@ import org.lsmr.selfcheckout.*;
 import org.lsmr.selfcheckout.devices.*;
 
 public class Customer {
-
+    
+    public int billPrice;
+    private PayWithBanknote paymentBanknote;
+    
+    private ElectronicScale baggingScale; 
+    private BagArea baggingArea;
     public BigDecimal runningTotal;
     public SelfCheckoutStation checkout;
     public double expectedWeight;
     private PayWithCoin payment;
-   
-    private ElectronicScale baggingScale; 
-    private BagArea baggingArea;
-    
     
     public Customer () {
     	// create the needed selfcheckoutstation for all tests
@@ -55,6 +56,25 @@ public class Customer {
   		}
   		return false;
   	}
+	
+//paying with banknotes
+  	public void startBanknotePay() {
+  		paymentBanknote = new PayWithBanknote(this.billPrice);
+  		checkout.banknoteValidator.register(paymentBanknote);
+  	}
+  	
+  	public void payBanknote (Banknote banknote) throws DisabledException, OverloadException {
+  		checkout.banknoteInput.accept(banknote);
+  	}
+  	
+  	public boolean endBanknotePay() {
+  		if (paymentBanknote.payment()) {
+  			System.out.println("Successful end transaction.");
+  			return true;
+  		}
+  		return false;
+  	}
+  	
     
     //Barcode item price is added to running total
     public void addBarcodeItem(BarcodedItem item){
@@ -86,8 +106,6 @@ public class Customer {
     }
     
 
-    public void pay(Banknote banknote){
-        //payWithBanknote(this.runningTotal);
-    }
+  
 
 }
