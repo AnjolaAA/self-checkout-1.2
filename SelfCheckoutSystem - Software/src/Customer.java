@@ -64,7 +64,8 @@ public class Customer {
         runningTotal = runningTotal.add(sc.getPrice());
         expectedWeight += item.getWeight(); //for checking the weight 
     }
-
+	
+	//Places Item into the Bagging Area and Checks if weight is correct
     public void placeItemInBagging(BarcodedItem item) throws Exception{
     	baggingScale.add(item);
     	try {
@@ -78,7 +79,8 @@ public class Customer {
 		}
     	
     }
-
+	
+    //Removes Item from bagging area
     public void removeItemInBagging(BarcodedItem item) {
     	baggingScale.remove(item);
     }
