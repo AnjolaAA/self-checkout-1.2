@@ -34,16 +34,12 @@ public class ScanItemEvent implements BarcodeScannerListener {
             this.price = product.getPrice();
             System.out.println("Barcode Successfully scanned!");
         }catch(NullPointerException e){
-            scanningError();
+            System.out.println("Product Not Found!");
         }
     }
     
     public BigDecimal getPrice(){
         return price;
-    }
-    
-    private void scanningError() throws Exception{
-        throw NullPointerException();
     }
 
 }
