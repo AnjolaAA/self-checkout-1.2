@@ -1,4 +1,4 @@
-package org.lsmr.selfcheckout;
+package org.lsmr.selfcheckout.software.src;
 import org.lsmr.selfcheckout.devices.*;
 import org.lsmr.selfcheckout.devices.listeners.*;
 
