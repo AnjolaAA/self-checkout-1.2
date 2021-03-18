@@ -10,6 +10,7 @@ public class Customer {
 
     public BigDecimal runningTotal;
     public SelfCheckoutStation checkout;
+    public double expectedWeight;
     private PayWithCoin payment;
    
     
@@ -52,6 +53,7 @@ public class Customer {
         checkout.mainScanner.register(sc);
         checkout.mainScanner.scan(item);
         runningTotal = runningTotal.add(sc.getPrice());
+        expectedWeight += item.getWeight(); //for checking the weight 
     }
 
     public void placeItemInBagging(){
