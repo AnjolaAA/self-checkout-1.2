@@ -1,5 +1,3 @@
-package org.lsmr.selfcheckout.software.src;
-
 import java.math.BigDecimal;
 import java.util.Currency;
 
