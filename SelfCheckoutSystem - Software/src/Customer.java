@@ -24,7 +24,7 @@ public class Customer {
     	checkout = new SelfCheckoutStation(currency, bankDenom, coinDenom, 23000, 10);
         
         this.expectedWeight = 0;
-        this.runningTotal = new BigDecimal(0);
+        this.runningTotal = new BigDecimal(0.000);
     }
 
 //indicating that payment has started with coins
