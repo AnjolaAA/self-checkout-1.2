@@ -58,7 +58,7 @@ public class Customer {
     
     //Barcode item price is added to running total
     public void addBarcodeItem(BarcodedItem item){
-        scannedItemEvent sc = new ScanItemEvemt();
+        ScanItemEvent sc = new ScanItemEvent();
         checkout.mainScanner.register(sc);
         checkout.mainScanner.scan(item);
         runningTotal = runningTotal.add(sc.getPrice());
