@@ -7,5 +7,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../SelfCheckoutSystem - Hardware - v1.2" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../SelfCheckoutSystem - Hardware - v1.2/SelfCheckoutSystem - Hardware - v1.2/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
